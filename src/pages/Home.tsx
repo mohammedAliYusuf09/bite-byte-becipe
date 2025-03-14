@@ -5,6 +5,7 @@ import { FaArrowLeft,FaArrowRight  } from "react-icons/fa6";
 import NavBar from "../components/NavBar";
 import Loading from "../components/Loading";
 const Recipes = lazy(() => import('../components/Recipes'));
+import { PiBowlFoodDuotone } from "react-icons/pi";
 
 
 
@@ -52,7 +53,8 @@ const Home = () =>  {
       <NavBar/>
       <div className="bg-stone-800">
       <div className="container text-white flex flex-col items-center gap-4 py-10">
-        <img className="w-15 sm:w-18 md:w-20" src="./public/rcp-logo.png" alt="logo" />
+        <span className="text-8xl "><PiBowlFoodDuotone /></span>
+      
         <SearchBox/>
       </div>
         {/*  filter settion  */}
