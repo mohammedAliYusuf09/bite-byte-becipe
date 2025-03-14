@@ -1,12 +1,37 @@
 import { Link, useParams } from "react-router"
-import recipeStore from "../Store/recipeStore";
 import { FaArrowLeft } from "react-icons/fa";
+import { useEffect, useState } from "react";
 
+type Recipe = {
+  id: number;
+  name: string;
+  image: string;
+  rating: number;
+  cuisine: string;
+  mealType: string[];
+  difficulty: string;
+  ingredients: string[];
+  instructions: string[];
+  reviewCount: number;
+  tags: string[]
+};
 
 function Details() {
-  const {allRecipes} = recipeStore();
+
+  const [recipes, setRecipe] = useState<Recipe[]>([]);
+
+  const fetchAllRecipe = async () => {
+      const res = await fetch("https://dummyjson.com/recipes?limit=50");
+      if (!res.ok) throw new Error(`Error: ${res.status} ${res.statusText}`);
+      const data = await res.json();
+      setRecipe(data?.recipes);
+  }
+
+  useEffect(()=> {
+    fetchAllRecipe()
+  },[])
   const {id} = useParams()
-  const recipe = allRecipes.find(recipe=> recipe.id === Number(id));
+  const recipe = recipes.find(recipe=> recipe.id === Number(id));
 
 
   
