@@ -51,7 +51,7 @@ const Home = () =>  {
       <NavBar/>
       <div className="bg-stone-800">
       <div className="container text-white flex flex-col items-center gap-4 py-10">
-        <img className="w-15 sm:w-18 md:w-20" src="./src/assets/rcp-logo.png" alt="logo" />
+        <img className="w-15 sm:w-18 md:w-20" src="./public/rcp-logo.png" alt="logo" />
         <SearchBox/>
       </div>
         {/*  filter settion  */}
