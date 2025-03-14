@@ -3,6 +3,7 @@ import SearchBox from "../components/SearchBox"
 import recipeStore from "../Store/recipeStore"
 import { FaArrowLeft,FaArrowRight  } from "react-icons/fa6";
 import NavBar from "../components/NavBar";
+import Loading from "../components/Loading";
 const Recipes = lazy(() => import('../components/Recipes'));
 
 
@@ -62,7 +63,7 @@ const Home = () =>  {
 
         {/* recipe list  */}
         <div className="container py-3 z-0 min-h-[80vh]">
-        <Suspense fallback={<h2>Loading ...</h2>}>
+        <Suspense fallback={<Loading/>}>
           <Recipes recipes={recipes} startPage={startPage} endPage={endPage}/>
         </Suspense>
             <div className="flex justify-center py-6">
