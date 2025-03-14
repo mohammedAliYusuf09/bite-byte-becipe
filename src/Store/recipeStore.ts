@@ -1,0 +1,67 @@
+import { create } from 'zustand'
+
+type Recipe = {
+  id: number;
+  name: string;
+  image: string;
+  rating: number;
+  cuisine: string;
+  mealType: string[];
+  difficulty: string;
+  ingredients: string[];
+  instructions: string[];
+  reviewCount: number;
+  tags: string[]
+};
+
+interface RecipeState {
+  allRecipes: Recipe[];
+  recipes: Recipe[];
+  setRecipes: (recipes: Recipe[]) => void;
+  setAllRecipes: (recipes: Recipe[]) => void;
+  getRecipes: (filterKey: string) => Promise<void>;
+}
+
+const recipeStore = create<RecipeState>((set, get) => ({
+  allRecipes: [],
+  recipes: [],
+  setAllRecipes: (allRecipes) => set({ allRecipes }),
+  setRecipes: (recipes) => set({ recipes }),
+  getRecipes: async (filterKey: string) => {
+    let { allRecipes } = get();
+
+    if (allRecipes.length === 0) {
+      try {
+        const res = await fetch("https://dummyjson.com/recipes?limit=50");
+        if (!res.ok) throw new Error(`Error: ${res.status} ${res.statusText}`);
+        const data = await res.json();
+
+        allRecipes = data.recipes;
+        set({ allRecipes });
+      } catch (error) {
+        console.error(error);
+        return;
+      }
+    }
+
+    if (filterKey === "All") {
+      set({ recipes: allRecipes });
+    }else if(filterKey === 'saved') {
+      const savedRecipeIDString = localStorage.getItem('saved');
+      if(savedRecipeIDString){
+        const savedRecipeIDArr = JSON.parse(savedRecipeIDString);
+        const savedRecipes = allRecipes.filter((item:Recipe)=> savedRecipeIDArr.includes(item.id));
+        set({recipes: savedRecipes})
+      }
+    }
+     else {
+      const filteredRecipes = allRecipes.filter(
+        (recipe) => recipe.cuisine === filterKey
+      );
+      set({ recipes: filteredRecipes });
+    }
+  },
+}));
+
+export default recipeStore;
+
